@@ -6,14 +6,22 @@ GO
 
 SELECT * FROM Posts;
 
+-- ========================================
+-- Tabla Tags
+-- ========================================
+-- Cada tag puede estar asociado a muchos posts.
 CREATE TABLE Tags (
 	TagId UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
 	Description NVARCHAR(25) NOT NULL,
-	Status NVARCHAR(15) NOT NULL,
+	Status NVARCHAR(15) NOT NULL DEFAULT 'Active',
 	CreatedAt DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
 );
 GO
 
+-- ========================================
+-- Tabla intermedia PostTags
+-- ========================================
+-- Relación muchos a muchos entre Posts y Tags
 CREATE TABLE PostTags (
 	TagId UNIQUEIDENTIFIER NOT NULL,
 	PostId UNIQUEIDENTIFIER NOT NULL,
