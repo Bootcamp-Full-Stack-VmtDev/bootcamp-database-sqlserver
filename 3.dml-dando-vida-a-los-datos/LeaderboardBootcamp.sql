@@ -26,9 +26,7 @@ CREATE TABLE ModuloTipos (
 	Especificidad	NVARCHAR(100) NOT NULL,
 	Tecnologia		NVARCHAR(100) NOT NULL,
 
-	CONSTRAINT PK_ModuloTipo PRIMARY KEY (ModuloTipoId),
-	-- CONSTRAINT CK_ModuloTipo_Especificidad CHECK (Especificidad IN ('Engine', 'Framework')),
-	-- CONSTRAINT CK_ModuloTipo_Tecnologia CHECK (Tecnologia IN ('NodeJS', 'Angular', 'SQL Server', '.NET'))
+	CONSTRAINT PK_ModuloTipo PRIMARY KEY (ModuloTipoId)
 );
 GO
 
@@ -81,7 +79,7 @@ CREATE TABLE Participaciones (
 	CONSTRAINT FK_Participaciones_Usuario FOREIGN KEY (EstudianteId) REFERENCES Usuarios (UsuarioId),
 	CONSTRAINT FK_Participaciones_Modulo FOREIGN KEY (ModuloId) REFERENCES Modulos (ModuloId)
 );
-GO*/
+GO
 
 -- DML
 
@@ -108,9 +106,6 @@ GO
 -- ============================================================
 --  TABLA: Usuarios
 -- ============================================================
-
-DELETE FROM Usuarios;
-
 DECLARE @JohnDoeUsuarioId UNIQUEIDENTIFIER = NEWID();
 DECLARE @JohnDoeSegundoUsuarioId UNIQUEIDENTIFIER = NEWID();
 DECLARE @JohnDoeTerceroUsuarioId UNIQUEIDENTIFIER = NEWID();
@@ -136,27 +131,16 @@ VALUES
 (@AngularModuloTipo, @JohnDoeSegundoUsuarioId),
 (@NodeJSModuloTipo, @JohnDoeTerceroUsuarioId);
 
-SELECT * FROM Modulos;
-
--- ============================================================
---  TABLA: Participaciones
--- ============================================================
-
-
-
+-- ========================================
 -- RESTRICCIONES
+-- ========================================
 
+-- Evitar correos duplicados
 ALTER TABLE Usuarios
 ADD CONSTRAINT UQ_Usuario_Correo UNIQUE (Correo);
 GO
 
-SELECT * FROM Usuarios;
-
-UPDATE Usuarios
-SET Correo = 'john3@doe.com', NumeroTelefono = '0215417458'
-WHERE UsuarioId = '1FFDE986-3B47-427A-950C-FDA38907475B';
-GO
-
+-- Evitar números de teléfono duplicados
 ALTER TABLE Usuarios
 ADD CONSTRAINT UQ_Usuario_NumeroTelefono UNIQUE (NumeroTelefono);
 GO
