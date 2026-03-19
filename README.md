@@ -66,4 +66,4 @@ Incluye desde prácticas de DDL, DML, joins, agregaciones, hasta un proyecto fin
 - `UdemyDatabase.sql` – Script completo de la base de datos.  
 - `udemy_infography.jpeg` – Infografía resumen del proyecto.
 
-📌 Para más detalles sobre el proyecto, revisar el [`README.md`](./proyecto-sql-server/README.md) dentro de la carpeta del proyecto.
+📌 Para más detalles sobre el proyecto, revisar el [`README.md`](./proyecto-sql-server) dentro de la carpeta del proyecto.
