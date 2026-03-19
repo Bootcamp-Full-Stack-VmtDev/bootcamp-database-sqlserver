@@ -1,4 +1,4 @@
-# 📚 Base de Datos: Udemy
+# 📚 Proyecto - Base de Datos: Plataforma tipo Udemy
 
 <p align="center">
   <img src="https://img.shields.io/badge/SQL%20Server-Database-blue" />
@@ -6,27 +6,12 @@
   <img src="https://img.shields.io/badge/Estado-Completado-brightgreen" />
 </p>
 
----
-
-## 📑 Tabla de Contenido
-- [📌 Descripción](#-descripción)
-- [👥 Equipo](#-equipo)
-- [🎯 Objetivos](#-objetivos)
-- [🧠 Contexto del negocio](#-contexto-del-negocio)
-- [🔗 Diagrama](#-diagrama)
-- [👥 Actores](#-actores)
-- [⚙️ Funcionalidades](#-funcionalidades)
-- [📏 Reglas de negocio](#-reglas-de-negocio)
-- [📝 Consultas principales](#-consultas-principales)
-- [💻 Scripts y datos](#-scripts-y-datos)
-
----
-
 ## 📌 Descripción
-Base de datos para una plataforma de cursos en línea (tipo Udemy).  
-💡 Enfoque: modelado relacional, SQL Server, reglas de negocio y consultas SQL prácticas.
+Este proyecto consiste en el diseño y desarrollo de una base de datos relacional para una plataforma de cursos tipo Udemy.  
 
----
+Abarca desde la conceptualización del modelo de datos hasta la codificación en SQL Server: definición de entidades, relaciones, restricciones y lógica de negocio.  
+
+La base de datos permite gestionar cursos, instructores y estudiantes, así como funcionalidades clave como inscripciones, progreso de aprendizaje, calificaciones y organización del contenido educativo.
 
 ## 👥 Equipo
 <p align="center">
@@ -39,10 +24,8 @@ Base de datos para una plataforma de cursos en línea (tipo Udemy).
   </a>
 </p>
 
-- **Jenny Vaque** – Análisis y diseño del diagrama junto con Edison, responsable del script DDL y de los ejercicios del 1 al 5.
-- **Edison Salinas** – Análisis y diseño del diagrama junto con Jenny, responsable del script DML y de los ejercicios del 6 al 10.  
-
----
+- **Jenny Vaque** – Análisis y diseño del diagrama, responsable del script DDL y de los ejercicios del 1 al 5.
+- **Edison Salinas** – Análisis y diseño del diagrama, responsable del script DML y de los ejercicios del 6 al 10.  
 
 ## 🎯 Objetivos
 - Diseñar una base de datos desde cero.  
@@ -50,36 +33,30 @@ Base de datos para una plataforma de cursos en línea (tipo Udemy).
 - Aplicar constraints y reglas de negocio.  
 - Construir consultas SQL que respondan a escenarios reales.
 
----
-
-## 🧠 Contexto del negocio
+## 🧠 Contexto del Negocio
 - Cursos online con secciones y lecciones.  
 - Inscripciones gratuitas o pagadas.  
 - Seguimiento de progreso y calificaciones.  
 - Listas de deseos y categorías de cursos.
 
----
-
-## 🔗 Diagrama
-<div style="border:1px solid #ddd; padding:5px; border-radius:8px; background-color:#f9f9f9; text-align:center;">
-  <h4 style="color:#007BFF; font-weight:bold;">📄 Diagrama de entidades</h4>
+## 🔗 Diagrama de Entidades
+<p align="center">
   <img src="diagrama-proyecto.svg" alt="Diagrama ER Udemy" width="600"/>
-  <p style="color:black;">Visualiza todas las entidades y relaciones del proyecto.</p>
-  <p>
-    📥 <a href="./diagrama-proyecto.svg">Descargar SVG</a> | 🔗 <a href="https://excalidraw.com/#room=dd4605aba25230f90df6,30xbsPcO0cn59QCs0wY1Fw">Ver en Excalidraw</a>
-  </p>
-</div>
+</p>
 
----
+> \[!NOTE]
+> Se muestra la representación visual de la base de datos, permitiendo identificar claramente las entidades, sus atributos y anotaciones claves. [Ver Diagrama en Excalidraw](https://excalidraw.com/#room=dd4605aba25230f90df6,30xbsPcO0cn59QCs0wY1Fw)
 
 ## 👥 Actores
+<div align="center">
+
 | Actor       | Función |
 |------------|------------|
-| **Estudiante** | Se inscribe, consume contenido, deja reseñas y calificaciones, sigue su progreso. |
+| **Estudiante** | Se inscribe, ve contenido, deja reseñas y calificaciones, sigue su progreso. |
 | **Instructor** | Crea cursos, administra contenido, puede colaborar en varios cursos. |
 | **Curso**      | Contiene secciones y lecciones, tiene precio, categoría, idioma y nivel de dificultad. |
 
----
+</div>
 
 ## ⚙️ Funcionalidades
 - Cursos con múltiples instructores.  
@@ -90,8 +67,6 @@ Base de datos para una plataforma de cursos en línea (tipo Udemy).
 - Lista de deseos.  
 - Organización por categorías y subcategorías.
 
----
-
 ## 📏 Reglas de negocio
 - Un estudiante no puede inscribirse dos veces en el mismo curso.  
 - Calificación: 1 a 5.  
@@ -100,8 +75,6 @@ Base de datos para una plataforma de cursos en línea (tipo Udemy).
 - Orden de secciones y lecciones debe preservarse.  
 - Curso debe tener al menos un instructor.  
 - Progreso = lecciones completadas / total de lecciones.
-
----
 
 ## 📝 Consultas principales
 1. Cursos con calificación promedio y total de reseñas.  
@@ -115,13 +88,10 @@ Base de datos para una plataforma de cursos en línea (tipo Udemy).
 9. Duración total de cada curso.  
 10. Cursos por categoría con precio promedio.
 
----
-
 ## 💻 Scripts y datos
 
-<div style="border:1px solid #ddd; padding:10px; border-radius:8px; background-color:#f9f9f9;">
-  <h4 style="color:#007BFF; font-weight:bold;">🗃 Script DDL</h4>
-  
+### 🗃 Script DDL
+
 ```sql
 -- ========================================
 -- TABLA: Categoria
@@ -145,15 +115,10 @@ CREATE TABLE Instructores (
 GO
 ...
 ```
+> \[!NOTE]
+> Se define la estructura completa de la base de datos, incluyendo tablas, relaciones, claves primarias y foráneas, así como restricciones que garantizan la integridad y consistencia de los datos. [Ver Script DDL](./Proyecto-Udemy-DDL.sql)
 
-  <p style="color:black;">Se define la estructura de la base de datos.</p>
-  📥 <a href="./Proyecto-Udemy-DDL.sql">Descargar Script DDL</a>
-</div>
-
-<br/>
-
-<div style="border:1px solid #ddd; padding:10px; border-radius:8px; background-color:#f9f9f9;">
-  <h4 style="color:#007BFF; font-weight:bold;">🥫 Script de Seed</h4>
+### 🥫 Script DML
 
 ```sql  
 -- ========================================
@@ -179,16 +144,11 @@ VALUES
     (@CatBackend, 'Backend', @CatWeb);
 ...
 ```
+> \[!NOTE]
+> Se insertan datos de prueba representativos del negocio, permitiendo simular escenarios reales y validar el correcto funcionamiento de la base de datos y sus relaciones. [Ver Script DML](./Proyecto-Udemy-DML.sql)
 
-  <p style="color:black;">Se inserta datos de prueba.</p>
-  📥 <a href="./Proyecto-Udemy-DML.sql">Descargar Script DML</a>
-</div>
-
-<br/>
-
-<div style="border:1px solid #ddd; padding:10px; border-radius:8px; background-color:#f9f9f9;">
-  <h4 style="color:#007BFF; font-weight:bold;">🔍 Script de Consultas</h4>
-
+### 🔍 Script de Consultas</h4>
+  
 ```sql    
 -- ========================================
 -- 1. Cursos con su calificación promedio y número de reseñas
@@ -204,7 +164,5 @@ ORDER BY PromedioCalificacion DESC;
 GO
 ...
 ```
-
-  <p style="color:black;">Se desarrolla los ejercicios del proyecto.</p>
-  📥 <a href="./Proyecto-Udemy-Ejercicios.sql">Descargar Script de consultas</a>
-</div>
+> \[!NOTE]
+> Se desarrollan consultas para poner a prueba diferentes operaciones y relaciones entre tablas. [Ver Script de consultas](./Proyecto-Udemy-Ejercicios.sql).
