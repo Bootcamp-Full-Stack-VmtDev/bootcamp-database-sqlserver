@@ -1,152 +1,152 @@
-USE UdemyClon;
+USE UdemyClone;
 GO
 
 -- ========================================
--- 1. Cursos con su calificación promedio y número de reseñas
+-- 1. Courses with average rating and total reviews
 -- ========================================
 SELECT 
-    c.Titulo, 
-    ROUND(AVG(CAST(r.Calificacion AS FLOAT)), 2) AS PromedioCalificacion,
-    COUNT(r.EstudianteId) AS TotalResenas
-FROM Cursos c
-LEFT JOIN Resenas r ON c.CursoId = r.CursoId
-GROUP BY c.Titulo
-ORDER BY PromedioCalificacion DESC;
+    c.Title, 
+    ROUND(AVG(CAST(r.Rating AS FLOAT)), 2) AS AverageRating,
+    COUNT(r.StudentId) AS TotalReviews
+FROM Courses c
+LEFT JOIN Reviews r ON c.CourseId = r.CourseId
+GROUP BY c.Title
+ORDER BY AverageRating DESC;
 GO
 
 -- ========================================
--- 2. Progreso de un estudiante en todos sus cursos inscritos
+-- 2. Student progress in all enrolled courses
 -- ========================================
 SELECT 
-    c.Titulo,
-    COUNT(DISTINCT p.LeccionId) AS LeccionesCompletadas,
-    COUNT(DISTINCT l.LeccionId) AS TotalLecciones,
-    ROUND((CAST(COUNT(DISTINCT p.LeccionId) AS FLOAT) / COUNT(DISTINCT l.LeccionId)) * 100, 2) AS PorcentajeAvance
-FROM Estudiantes e
-JOIN Inscripciones i ON e.EstudianteId = i.EstudianteId
-JOIN Cursos c ON i.CursoId = c.CursoId
-JOIN Secciones s ON c.CursoId = s.CursoId
-JOIN Lecciones l ON s.SeccionId = l.SeccionId
-LEFT JOIN Progreso p ON e.EstudianteId = p.EstudianteId AND l.LeccionId = p.LeccionId
+    c.Title,
+    COUNT(DISTINCT p.LessonId) AS CompletedLessons,
+    COUNT(DISTINCT l.LessonId) AS TotalLessons,
+    ROUND((CAST(COUNT(DISTINCT p.LessonId) AS FLOAT) / COUNT(DISTINCT l.LessonId)) * 100, 2) AS ProgressPercentage
+FROM Students e
+JOIN Enrollments i ON e.StudentId = i.StudentId
+JOIN Courses c ON i.CourseId = c.CourseId
+JOIN Sections s ON c.CourseId = s.CourseId
+JOIN Lessons l ON s.SectionId = l.SectionId
+LEFT JOIN Progress p ON e.StudentId = p.StudentId AND l.LessonId = p.LessonId
 WHERE e.Email = 'juan.martinez@outlook.com'
-GROUP BY c.Titulo;
+GROUP BY c.Title;
 GO
 
 -- ========================================
--- 3. Top 5 instructores por número de estudiantes inscritos
+-- 3. Top 5 instructors by number of enrolled students
 -- ========================================
 SELECT TOP 5
-    ins.Nombre AS Instructor, 
-    COUNT(DISTINCT i.EstudianteId) AS TotalEstudiantes
-FROM Instructores ins
-JOIN CursoInstructor ci ON ins.InstructorId = ci.InstructorId
-JOIN Inscripciones i ON ci.CursoId = i.CursoId
-GROUP BY ins.Nombre
-ORDER BY TotalEstudiantes DESC;
+    ins.Name AS Instructor, 
+    COUNT(DISTINCT i.StudentId) AS TotalStudents
+FROM Instructors ins
+JOIN CourseInstructors ci ON ins.InstructorId = ci.InstructorId
+JOIN Enrollments i ON ci.CourseId = i.CourseId
+GROUP BY ins.Name
+ORDER BY TotalStudents DESC;
 GO
 
 -- ========================================
--- 4. Cursos a los que un estudiante está inscrito pero no ha iniciado
+-- 4. Courses a student is enrolled in but has not started
 -- ========================================
 SELECT 
-    c.Titulo, 
-    CAST(i.FechaInscripcion AS DATE) AS FechaInscripcion
-FROM Estudiantes e
-JOIN Inscripciones i ON e.EstudianteId = i.EstudianteId
-JOIN Cursos c ON i.CursoId = c.CursoId
-LEFT JOIN Progreso p ON e.EstudianteId = p.EstudianteId 
-    AND p.LeccionId IN (
-        SELECT l.LeccionId 
-        FROM Lecciones l 
-        JOIN Secciones s ON l.SeccionId = s.SeccionId 
-        WHERE s.CursoId = c.CursoId
+    c.Title, 
+    CAST(i.EnrolledAt AS DATE) AS EnrollmentDate
+FROM Students e
+JOIN Enrollments i ON e.StudentId = i.StudentId
+JOIN Courses c ON i.CourseId = c.CourseId
+LEFT JOIN Progress p ON e.StudentId = p.StudentId 
+    AND p.LessonId IN (
+        SELECT l.LessonId 
+        FROM Lessons l 
+        JOIN Sections s ON l.SectionId = s.SectionId 
+        WHERE s.CourseId = c.CourseId
     )
 WHERE e.Email = 'marta.lopez@gmail.com'
-AND p.LeccionId IS NULL;
+AND p.LessonId IS NULL;
 GO
 
 -- ========================================
--- 5. Ingresos totales por curso
+-- 5. Total revenue by course
 -- ========================================
 SELECT 
-    c.Titulo, 
-    SUM(i.PrecioPagado) AS IngresosTotales
-FROM Cursos c
-JOIN Inscripciones i ON c.CursoId = i.CursoId
-GROUP BY c.Titulo
-ORDER BY IngresosTotales DESC;
+    c.Title, 
+    SUM(i.PricePaid) AS TotalRevenue
+FROM Courses c
+JOIN Enrollments i ON c.CourseId = i.CourseId
+GROUP BY c.Title
+ORDER BY TotalRevenue DESC;
 GO
 
 -- ========================================
--- 6. Lecciones de un curso con su sección y duración
+-- 6. Lessons of a course with section and duration
 -- ========================================
 SELECT 
-    s.Titulo AS Seccion,
-    l.Titulo AS Leccion,
-    ROUND(CAST(l.DuracionSegundos AS FLOAT) / 60, 2) AS DuracionMinutos,
-    tl.Nombre AS TipoLeccion
-FROM Cursos c
-JOIN Secciones s ON c.CursoId = s.CursoId
-JOIN Lecciones l ON s.SeccionId = l.SeccionId
-JOIN TipoLeccion tl ON l.TipoLeccionId = tl.TipoLeccionId
-WHERE c.Titulo = 'Introducción a la Programación en Python'
-ORDER BY s.Orden, l.Orden;
+    s.Title AS Section,
+    l.Title AS Lesson,
+    ROUND(CAST(l.DurationSeconds AS FLOAT) / 60, 2) AS DurationMinutes,
+    lt.Name AS LessonType
+FROM Courses c
+JOIN Sections s ON c.CourseId = s.CourseId
+JOIN Lessons l ON s.SectionId = l.SectionId
+JOIN LessonTypes lt ON l.LessonTypeId = lt.LessonTypeId
+WHERE c.Title = 'Introduction to Python Programming'
+ORDER BY s.SortOrder, l.SortOrder;
 GO
 
 -- ========================================
--- 7. Estudiantes que han completado el 100% de al menos un curso
+-- 7. Students who completed 100% of at least one course
 -- ========================================
 SELECT 
-    e.Nombre AS Estudiante,
-    c.Titulo AS Curso
-FROM Estudiantes e
-JOIN Inscripciones i ON e.EstudianteId = i.EstudianteId
-JOIN Cursos c ON i.CursoId = c.CursoId
-JOIN Secciones s ON c.CursoId = s.CursoId
-JOIN Lecciones l ON s.SeccionId = l.SeccionId
-LEFT JOIN Progreso p ON e.EstudianteId = p.EstudianteId AND l.LeccionId = p.LeccionId
-GROUP BY e.Nombre, c.Titulo
-HAVING COUNT(DISTINCT l.LeccionId) = COUNT(DISTINCT p.LeccionId);
+    e.Name AS Student,
+    c.Title AS Course
+FROM Students e
+JOIN Enrollments i ON e.StudentId = i.StudentId
+JOIN Courses c ON i.CourseId = c.CourseId
+JOIN Sections s ON c.CourseId = s.CourseId
+JOIN Lessons l ON s.SectionId = l.SectionId
+LEFT JOIN Progress p ON e.StudentId = p.StudentId AND l.LessonId = p.LessonId
+GROUP BY e.Name, c.Title
+HAVING COUNT(DISTINCT l.LessonId) = COUNT(DISTINCT p.LessonId);
 GO
 
 -- ========================================
--- 8. Cursos en lista de deseos de un estudiante que aún no ha comprado
+-- 8. Wishlist courses not yet purchased
 -- ========================================
 SELECT 
-    c.Titulo,
-    c.Precio
-FROM ListaDeseos ld
-JOIN Estudiantes e ON ld.EstudianteId = e.EstudianteId
-JOIN Cursos c ON ld.CursoId = c.CursoId
-LEFT JOIN Inscripciones i 
-    ON e.EstudianteId = i.EstudianteId 
-    AND c.CursoId = i.CursoId
+    c.Title,
+    c.Price
+FROM Wishlist w
+JOIN Students e ON w.StudentId = e.StudentId
+JOIN Courses c ON w.CourseId = c.CourseId
+LEFT JOIN Enrollments i 
+    ON e.StudentId = i.StudentId 
+    AND c.CourseId = i.CourseId
 WHERE e.Email = 'paola.perez@gmail.com'
-  AND i.InscripcionId IS NULL;
+  AND i.EnrollmentId IS NULL;
 GO
 
 -- ========================================
--- 9. Duración total en horas de cada curso
+-- 9. Total duration in hours of each course
 -- ========================================
 SELECT 
-    c.Titulo, 
-    ROUND(SUM(CAST(l.DuracionSegundos AS FLOAT)) / 3600, 2) AS TotalHoras
-FROM Cursos c
-JOIN Secciones s ON c.CursoId = s.CursoId
-JOIN Lecciones l ON s.SeccionId = l.SeccionId
-GROUP BY c.Titulo
-ORDER BY TotalHoras DESC;
+    c.Title, 
+    ROUND(SUM(CAST(l.DurationSeconds AS FLOAT)) / 3600, 2) AS TotalHours
+FROM Courses c
+JOIN Sections s ON c.CourseId = s.CourseId
+JOIN Lessons l ON s.SectionId = l.SectionId
+GROUP BY c.Title
+ORDER BY TotalHours DESC;
 GO
 
 -- ========================================
--- 10. Cursos por categoría con su precio promedio
+-- 10. Courses by category with average price
 -- ========================================
 SELECT 
-    cat.Nombre AS Categoria, 
-    COUNT(c.CursoId) AS TotalCursos,
-    ROUND(AVG(CAST(c.Precio AS FLOAT)), 2) AS PrecioPromedio
-FROM Categoria cat
-JOIN Cursos c ON cat.CategoriaId = c.CategoriaId
-GROUP BY cat.Nombre
-ORDER BY TotalCursos DESC;
+    cat.Name AS Category, 
+    COUNT(c.CourseId) AS TotalCourses,
+    ROUND(AVG(CAST(c.Price AS FLOAT)), 2) AS AveragePrice
+FROM Categories cat
+JOIN Courses c ON cat.CategoryId = c.CategoryId
+GROUP BY cat.Name
+ORDER BY TotalCourses DESC;
 GO
