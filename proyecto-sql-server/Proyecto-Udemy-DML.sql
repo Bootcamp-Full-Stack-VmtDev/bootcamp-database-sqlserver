@@ -1,30 +1,30 @@
-USE UdemyClon;
+USE UdemyClone;
 GO
 
 -- ========================================
--- INSERT: Categorías con autoreferencia
+-- INSERT: Categories with self-reference
 -- ========================================
 DECLARE 
-    @CatProgramacion UNIQUEIDENTIFIER = NEWID(),
+    @CatProgramming UNIQUEIDENTIFIER = NEWID(),
     @CatWeb UNIQUEIDENTIFIER = NEWID(),
-    @CatBD UNIQUEIDENTIFIER = NEWID(),
-    @CatSeguridad UNIQUEIDENTIFIER = NEWID(),
-    @CatIA UNIQUEIDENTIFIER = NEWID(),
+    @CatDB UNIQUEIDENTIFIER = NEWID(),
+    @CatSecurity UNIQUEIDENTIFIER = NEWID(),
+    @CatAI UNIQUEIDENTIFIER = NEWID(),
     @CatFrontend UNIQUEIDENTIFIER = NEWID(),
     @CatBackend UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO Categoria (CategoriaId, Nombre, CategoriaPadreId)
+INSERT INTO Categories (CategoryId, Name, ParentCategoryId)
 VALUES
-    (@CatProgramacion, 'Programación', NULL),
-    (@CatWeb, 'Desarrollo Web', @CatProgramacion),
-    (@CatBD, 'Bases de Datos', @CatProgramacion),
-    (@CatSeguridad, 'Seguridad Informática', @CatProgramacion),
-    (@CatIA, 'Inteligencia Artificial', @CatProgramacion),
+    (@CatProgramming, 'Programming', NULL),
+    (@CatWeb, 'Web Development', @CatProgramming),
+    (@CatDB, 'Databases', @CatProgramming),
+    (@CatSecurity, 'Cybersecurity', @CatProgramming),
+    (@CatAI, 'Artificial Intelligence', @CatProgramming),
     (@CatFrontend, 'Frontend', @CatWeb),
     (@CatBackend, 'Backend', @CatWeb);
 
 -- ========================================
--- INSERT: Instructores
+-- INSERT: Instructors
 -- ========================================
 DECLARE 
     @InsCarlos UNIQUEIDENTIFIER = NEWID(),
@@ -33,84 +33,84 @@ DECLARE
     @InsLaura UNIQUEIDENTIFIER = NEWID(),
     @InsEduardo UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO Instructores (InstructorId, Nombre, Email)
+INSERT INTO Instructors (InstructorId, Name, Email)
 VALUES
-    (@InsCarlos, 'Carlos Pérez', 'carlos.perez@gmail.com'),
-    (@InsAna, 'Ana Sánchez', 'ana.sanchez@hotmail.com'),
-    (@InsJavier, 'Javier Gómez', 'javier.gomez@outlook.com'),
-    (@InsLaura, 'Laura Rodríguez', 'laura.rodriguez@yahoo.com'),
-    (@InsEduardo, 'Eduardo Díaz', 'eduardo.diaz@gmail.com');
+    (@InsCarlos, 'Carlos Perez', 'carlos.perez@gmail.com'),
+    (@InsAna, 'Ana Sanchez', 'ana.sanchez@hotmail.com'),
+    (@InsJavier, 'Javier Gomez', 'javier.gomez@outlook.com'),
+    (@InsLaura, 'Laura Rodriguez', 'laura.rodriguez@yahoo.com'),
+    (@InsEduardo, 'Eduardo Diaz', 'eduardo.diaz@gmail.com');
 
 -- ========================================
--- INSERT: Estudiantes
+-- INSERT: Students
 -- ========================================
 DECLARE 
-    @EstJuan UNIQUEIDENTIFIER = NEWID(),
-    @EstMarta UNIQUEIDENTIFIER = NEWID(),
-    @EstAndres UNIQUEIDENTIFIER = NEWID(),
-    @EstElena UNIQUEIDENTIFIER = NEWID(),
-    @EstLuis UNIQUEIDENTIFIER = NEWID(),
-    @EstPaola UNIQUEIDENTIFIER = NEWID(),
-    @EstFelipe UNIQUEIDENTIFIER = NEWID(),
-    @EstMaria UNIQUEIDENTIFIER = NEWID(),
-    @EstRicardo UNIQUEIDENTIFIER = NEWID(),
-    @EstValeria UNIQUEIDENTIFIER = NEWID();
+    @StuJuan UNIQUEIDENTIFIER = NEWID(),
+    @StuMarta UNIQUEIDENTIFIER = NEWID(),
+    @StuAndres UNIQUEIDENTIFIER = NEWID(),
+    @StuElena UNIQUEIDENTIFIER = NEWID(),
+    @StuLuis UNIQUEIDENTIFIER = NEWID(),
+    @StuPaola UNIQUEIDENTIFIER = NEWID(),
+    @StuFelipe UNIQUEIDENTIFIER = NEWID(),
+    @StuMaria UNIQUEIDENTIFIER = NEWID(),
+    @StuRicardo UNIQUEIDENTIFIER = NEWID(),
+    @StuValeria UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO Estudiantes (EstudianteId, Nombre, Email)
+INSERT INTO Students (StudentId, Name, Email)
 VALUES
-    (@EstJuan, 'Juan Martínez', 'juan.martinez@outlook.com'),
-    (@EstMarta, 'Marta López', 'marta.lopez@gmail.com'),
-    (@EstAndres, 'Andrés González', 'andres.gonzalez@hotmail.com'),
-    (@EstElena, 'Elena Ruiz', 'elena.ruiz@outlook.com'),
-    (@EstLuis, 'Luis García', 'luis.garcia@gmail.com'),
-    (@EstPaola, 'Paola Pérez', 'paola.perez@gmail.com'),
-    (@EstFelipe, 'Felipe Fernández', 'felipe.fernandez@hotmail.com'),
-    (@EstMaria, 'María Rodríguez', 'maria.rodriguez@gmail.com'),
-    (@EstRicardo, 'Ricardo Torres', 'ricardo.torres@yahoo.com'),
-    (@EstValeria, 'Valeria Martínez', 'valeria.martinez@outlook.com');
+    (@StuJuan, 'Juan Martinez', 'juan.martinez@outlook.com'),
+    (@StuMarta, 'Marta Lopez', 'marta.lopez@gmail.com'),
+    (@StuAndres, 'Andres Gonzalez', 'andres.gonzalez@hotmail.com'),
+    (@StuElena, 'Elena Ruiz', 'elena.ruiz@outlook.com'),
+    (@StuLuis, 'Luis Garcia', 'luis.garcia@gmail.com'),
+    (@StuPaola, 'Paola Perez', 'paola.perez@gmail.com'),
+    (@StuFelipe, 'Felipe Fernandez', 'felipe.fernandez@hotmail.com'),
+    (@StuMaria, 'Maria Rodriguez', 'maria.rodriguez@gmail.com'),
+    (@StuRicardo, 'Ricardo Torres', 'ricardo.torres@yahoo.com'),
+    (@StuValeria, 'Valeria Martinez', 'valeria.martinez@outlook.com');
 
 -- ========================================
--- INSERT: TipoLeccion
+-- INSERT: LessonTypes
 -- ========================================
-INSERT INTO TipoLeccion (Nombre)
+INSERT INTO LessonTypes (Name)
 VALUES
     ('Video'),
-    ('Lectura'),
-    ('Examen'),
-    ('Práctica'),
-    ('Foro');
+    ('Reading'),
+    ('Exam'),
+    ('Practice'),
+    ('Forum');
 
 -- ========================================
--- INSERT: Cursos
+-- INSERT: Courses
 -- ========================================
 DECLARE
-    @CursoPython UNIQUEIDENTIFIER = NEWID(),
-    @CursoWeb UNIQUEIDENTIFIER = NEWID(),
-    @CursoMySQL UNIQUEIDENTIFIER = NEWID(),
-    @CursoSeguridad UNIQUEIDENTIFIER = NEWID(),
-    @CursoIA UNIQUEIDENTIFIER = NEWID();
+    @CoursePython UNIQUEIDENTIFIER = NEWID(),
+    @CourseWeb UNIQUEIDENTIFIER = NEWID(),
+    @CourseMySQL UNIQUEIDENTIFIER = NEWID(),
+    @CourseSecurity UNIQUEIDENTIFIER = NEWID(),
+    @CourseAI UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO Cursos (CursoId, Titulo, Descripcion, Precio, Idioma, Nivel, CategoriaId)
+INSERT INTO Courses (CourseId, Title, Description, Price, Language, Level, CategoryId)
 VALUES
-    (@CursoPython, 'Introducción a la Programación en Python', 'Curso básico de programación en Python.', 50.00, 'Español', 'Principiante', @CatProgramacion),
-    (@CursoWeb, 'Desarrollo Web con HTML y CSS', 'Curso para aprender a crear páginas web estáticas.', 60.00, 'Español', 'Principiante', @CatWeb),
-    (@CursoMySQL, 'Bases de Datos con MySQL', 'Curso completo de bases de datos relacionales utilizando MySQL.', 70.00, 'Español', 'Intermedio', @CatBD),
-    (@CursoSeguridad, 'Seguridad Informática: Fundamentos', 'Aprende las bases de la seguridad en informática.', 80.00, 'Español', 'Avanzado', @CatSeguridad),
-    (@CursoIA, 'Introducción a la Inteligencia Artificial con Python', 'Curso para introducirte en la inteligencia artificial usando Python.', 90.00, 'Español', 'Intermedio', @CatIA);
+    (@CoursePython, 'Introduction to Python Programming', 'Basic Python programming course.', 50.00, 'Spanish', 'Beginner', @CatProgramming),
+    (@CourseWeb, 'Web Development with HTML and CSS', 'Course to learn how to create static web pages.', 60.00, 'Spanish', 'Beginner', @CatWeb),
+    (@CourseMySQL, 'Databases with MySQL', 'Complete relational database course using MySQL.', 70.00, 'Spanish', 'Intermediate', @CatDB),
+    (@CourseSecurity, 'Cybersecurity Fundamentals', 'Learn the basics of cybersecurity.', 80.00, 'Spanish', 'Advanced', @CatSecurity),
+    (@CourseAI, 'Introduction to Artificial Intelligence with Python', 'Course to get started in artificial intelligence using Python.', 90.00, 'Spanish', 'Intermediate', @CatAI);
 
 -- ========================================
--- INSERT: CursoInstructor (N:M)
+-- INSERT: CourseInstructors (N:M)
 -- ========================================
-INSERT INTO CursoInstructor (CursoId, InstructorId)
+INSERT INTO CourseInstructors (CourseId, InstructorId)
 VALUES
-    (@CursoPython, @InsCarlos),
-    (@CursoWeb, @InsAna),
-    (@CursoMySQL, @InsJavier),
-    (@CursoSeguridad, @InsLaura),
-    (@CursoIA, @InsEduardo);
+    (@CoursePython, @InsCarlos),
+    (@CourseWeb, @InsAna),
+    (@CourseMySQL, @InsJavier),
+    (@CourseSecurity, @InsLaura),
+    (@CourseAI, @InsEduardo);
 
 -- ========================================
--- INSERT: Secciones
+-- INSERT: Sections
 -- ========================================
 DECLARE
     @SecPython1 UNIQUEIDENTIFIER = NEWID(),
@@ -128,33 +128,33 @@ DECLARE
     @SecSeg1 UNIQUEIDENTIFIER = NEWID(),
     @SecSeg2 UNIQUEIDENTIFIER = NEWID(),
     @SecSeg3 UNIQUEIDENTIFIER = NEWID(),
-    @SecIA1 UNIQUEIDENTIFIER = NEWID(),
-    @SecIA2 UNIQUEIDENTIFIER = NEWID(),
-    @SecIA3 UNIQUEIDENTIFIER = NEWID();
+    @SecAI1 UNIQUEIDENTIFIER = NEWID(),
+    @SecAI2 UNIQUEIDENTIFIER = NEWID(),
+    @SecAI3 UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO Secciones (SeccionId, CursoId, Titulo, Orden)
+INSERT INTO Sections (SectionId, CourseId, Title, SortOrder)
 VALUES
-    (@SecPython1, @CursoPython, 'Introducción a la Programación', 1),
-    (@SecPython2, @CursoPython, 'Variables y Tipos de Datos', 2),
-    (@SecPython3, @CursoPython, 'Condicionales y Bucles', 3),
-    (@SecPython4, @CursoPython, 'Funciones y Librerías', 4),
-    (@SecWeb1, @CursoWeb, 'Introducción al Desarrollo Web', 1),
-    (@SecWeb2, @CursoWeb, 'HTML Básico', 2),
-    (@SecWeb3, @CursoWeb, 'CSS y Diseño Web', 3),
-    (@SecWeb4, @CursoWeb, 'JavaScript para Principiantes', 4),
-    (@SecMySQL1, @CursoMySQL, 'Conceptos Básicos de Bases de Datos', 1),
-    (@SecMySQL2, @CursoMySQL, 'Modelado Relacional', 2),
-    (@SecMySQL3, @CursoMySQL, 'Consultas SQL', 3),
-    (@SecMySQL4, @CursoMySQL, 'Optimización de Consultas', 4),
-    (@SecSeg1, @CursoSeguridad, 'Conceptos de Seguridad Informática', 1),
-    (@SecSeg2, @CursoSeguridad, 'Criptografía Básica', 2),
-    (@SecSeg3, @CursoSeguridad, 'Hacking Ético', 3),
-    (@SecIA1, @CursoIA, 'Introducción a la Inteligencia Artificial', 1),
-    (@SecIA2, @CursoIA, 'Redes Neuronales Básicas', 2),
-    (@SecIA3, @CursoIA, 'Aplicaciones de IA', 3);
+    (@SecPython1, @CoursePython, 'Introduction to Programming', 1),
+    (@SecPython2, @CoursePython, 'Variables and Data Types', 2),
+    (@SecPython3, @CoursePython, 'Conditionals and Loops', 3),
+    (@SecPython4, @CoursePython, 'Functions and Libraries', 4),
+    (@SecWeb1, @CourseWeb, 'Introduction to Web Development', 1),
+    (@SecWeb2, @CourseWeb, 'Basic HTML', 2),
+    (@SecWeb3, @CourseWeb, 'CSS and Web Design', 3),
+    (@SecWeb4, @CourseWeb, 'JavaScript for Beginners', 4),
+    (@SecMySQL1, @CourseMySQL, 'Database Fundamentals', 1),
+    (@SecMySQL2, @CourseMySQL, 'Relational Modeling', 2),
+    (@SecMySQL3, @CourseMySQL, 'SQL Queries', 3),
+    (@SecMySQL4, @CourseMySQL, 'Query Optimization', 4),
+    (@SecSeg1, @CourseSecurity, 'Cybersecurity Concepts', 1),
+    (@SecSeg2, @CourseSecurity, 'Basic Cryptography', 2),
+    (@SecSeg3, @CourseSecurity, 'Ethical Hacking', 3),
+    (@SecAI1, @CourseAI, 'Introduction to Artificial Intelligence', 1),
+    (@SecAI2, @CourseAI, 'Basic Neural Networks', 2),
+    (@SecAI3, @CourseAI, 'AI Applications', 3);
 
 -- ========================================
--- INSERT: Lecciones
+-- INSERT: Lessons
 -- ========================================
 DECLARE
     @Lec1 UNIQUEIDENTIFIER = NEWID(),
@@ -170,84 +170,84 @@ DECLARE
     @Lec11 UNIQUEIDENTIFIER = NEWID(),
     @Lec12 UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO Lecciones (LeccionId, SeccionId, TipoLeccionId, Titulo, DuracionSegundos, Orden)
+INSERT INTO Lessons (LessonId, SectionId, LessonTypeId, Title, DurationSeconds, SortOrder)
 VALUES
-    (@Lec1, @SecPython1, 1, 'Qué es la Programación', 600, 1),
-    (@Lec2, @SecPython1, 1, 'Primer Programa en Python', 900, 2),
-    (@Lec3, @SecPython2, 2, 'Tipos de Datos en Python', 600, 1),
-    (@Lec4, @SecPython3, 3, 'Estructuras Condicionales', 1200, 1),
-    (@Lec5, @SecPython3, 3, 'Bucles en Python', 1500, 2),
-    (@Lec6, @SecPython4, 4, 'Uso de Funciones en Python', 1800, 1),
-    (@Lec7, @SecWeb1, 1, 'Qué es HTML', 600, 1),
-    (@Lec8, @SecWeb1, 1, 'Estructura de una Página Web', 800, 2),
-    (@Lec9, @SecWeb2, 2, 'CSS Básico', 1000, 1),
-    (@Lec10, @SecMySQL2, 3, 'Modelo Relacional de Bases de Datos', 1200, 1),
-    (@Lec11, @SecIA2, 1, 'Redes Neuronales en IA', 1000, 1),
-    (@Lec12, @SecSeg3, 5, 'Prácticas en Seguridad Informática', 1200, 1);
+    (@Lec1, @SecPython1, 1, 'What is Programming', 600, 1),
+    (@Lec2, @SecPython1, 1, 'First Python Program', 900, 2),
+    (@Lec3, @SecPython2, 2, 'Python Data Types', 600, 1),
+    (@Lec4, @SecPython3, 3, 'Conditional Structures', 1200, 1),
+    (@Lec5, @SecPython3, 3, 'Loops in Python', 1500, 2),
+    (@Lec6, @SecPython4, 4, 'Using Functions in Python', 1800, 1),
+    (@Lec7, @SecWeb1, 1, 'What is HTML', 600, 1),
+    (@Lec8, @SecWeb1, 1, 'Web Page Structure', 800, 2),
+    (@Lec9, @SecWeb2, 2, 'Basic CSS', 1000, 1),
+    (@Lec10, @SecMySQL2, 3, 'Relational Database Model', 1200, 1),
+    (@Lec11, @SecAI2, 1, 'Neural Networks in AI', 1000, 1),
+    (@Lec12, @SecSeg3, 5, 'Cybersecurity Practices', 1200, 1);
 
 -- ========================================
--- INSERT: Inscripciones
+-- INSERT: Enrollments
 -- ========================================
-INSERT INTO Inscripciones (InscripcionId, EstudianteId, CursoId, PrecioPagado, CuponCodigo)
+INSERT INTO Enrollments (EnrollmentId, StudentId, CourseId, PricePaid, CouponCode)
 VALUES
-    (NEWID(), @EstJuan, @CursoPython, 50.00, NULL),
-    (NEWID(), @EstMarta, @CursoWeb, 60.00, 'DESCUENTO10'),
-    (NEWID(), @EstAndres, @CursoMySQL, 70.00, NULL),
-    (NEWID(), @EstElena, @CursoSeguridad, 80.00, 'OFERTA20'),
-    (NEWID(), @EstLuis, @CursoIA, 90.00, NULL),
-    (NEWID(), @EstPaola, @CursoPython, 50.00, 'DESCUENTO10'),
-    (NEWID(), @EstFelipe, @CursoWeb, 60.00, NULL),
-    (NEWID(), @EstMaria, @CursoMySQL, 70.00, NULL),
-    (NEWID(), @EstRicardo, @CursoSeguridad, 80.00, NULL),
-    (NEWID(), @EstValeria, @CursoIA, 90.00, 'OFERTA20');
+    (NEWID(), @StuJuan, @CoursePython, 50.00, NULL),
+    (NEWID(), @StuMarta, @CourseWeb, 60.00, 'DISCOUNT10'),
+    (NEWID(), @StuAndres, @CourseMySQL, 70.00, NULL),
+    (NEWID(), @StuElena, @CourseSecurity, 80.00, 'OFFER20'),
+    (NEWID(), @StuLuis, @CourseAI, 90.00, NULL),
+    (NEWID(), @StuPaola, @CoursePython, 50.00, 'DISCOUNT10'),
+    (NEWID(), @StuFelipe, @CourseWeb, 60.00, NULL),
+    (NEWID(), @StuMaria, @CourseMySQL, 70.00, NULL),
+    (NEWID(), @StuRicardo, @CourseSecurity, 80.00, NULL),
+    (NEWID(), @StuValeria, @CourseAI, 90.00, 'OFFER20');
 
 -- ========================================
--- INSERT: Resenas
+-- INSERT: Reviews
 -- ========================================
-INSERT INTO Resenas (EstudianteId, CursoId, Calificacion, Resena)
+INSERT INTO Reviews (StudentId, CourseId, Rating, ReviewText)
 VALUES
-    (@EstJuan, @CursoPython, 5, 'Excelente curso para empezar en programación.'),
-    (@EstMarta, @CursoWeb, 4, 'Buen curso, aunque el tema de CSS podría ser más profundo.'),
-    (@EstAndres, @CursoMySQL, 5, 'Muy completo, aprendí mucho sobre bases de datos.'),
-    (@EstElena, @CursoSeguridad, 4, 'Interesante, pero hay mucho contenido teórico.'),
-    (@EstLuis, @CursoIA, 5, 'Impresionante curso de Inteligencia Artificial, muy recomendable.');
+    (@StuJuan, @CoursePython, 5, 'Excellent course to start programming.'),
+    (@StuMarta, @CourseWeb, 4, 'Good course, although CSS could be more in-depth.'),
+    (@StuAndres, @CourseMySQL, 5, 'Very complete, I learned a lot about databases.'),
+    (@StuElena, @CourseSecurity, 4, 'Interesting, but there is a lot of theory.'),
+    (@StuLuis, @CourseAI, 5, 'Amazing AI course, highly recommended.');
 
 -- ========================================
--- INSERT: ListaDeseos
+-- INSERT: Wishlist
 -- ========================================
-INSERT INTO ListaDeseos (CursoId, EstudianteId)
+INSERT INTO Wishlist (CourseId, StudentId)
 VALUES
-    (@CursoPython, @EstPaola),
-    (@CursoWeb, @EstPaola),
-    (@CursoMySQL, @EstPaola),
-    (@CursoSeguridad, @EstPaola),
-    (@CursoWeb, @EstFelipe),
-    (@CursoMySQL, @EstMaria),
-    (@CursoSeguridad, @EstRicardo),
-    (@CursoIA, @EstValeria),
-    (@CursoPython, @EstJuan),
-    (@CursoWeb, @EstMarta),
-    (@CursoMySQL, @EstAndres),
-    (@CursoSeguridad, @EstElena),
-    (@CursoIA, @EstLuis);
+    (@CoursePython, @StuPaola),
+    (@CourseWeb, @StuPaola),
+    (@CourseMySQL, @StuPaola),
+    (@CourseSecurity, @StuPaola),
+    (@CourseWeb, @StuFelipe),
+    (@CourseMySQL, @StuMaria),
+    (@CourseSecurity, @StuRicardo),
+    (@CourseAI, @StuValeria),
+    (@CoursePython, @StuJuan),
+    (@CourseWeb, @StuMarta),
+    (@CourseMySQL, @StuAndres),
+    (@CourseSecurity, @StuElena),
+    (@CourseAI, @StuLuis);
 
 -- ========================================
--- INSERT: Progreso
+-- INSERT: Progress
 -- ========================================
-INSERT INTO Progreso (EstudianteId, LeccionId)
+INSERT INTO Progress (StudentId, LessonId)
 VALUES
-    (@EstJuan, @Lec1),
-    (@EstJuan, @Lec2),
-    (@EstJuan, @Lec3),
-    (@EstJuan, @Lec4),
-    (@EstJuan, @Lec5),
-    (@EstJuan, @Lec6),
-    (@EstMarta, @Lec2),
-    (@EstAndres, @Lec3),
-    (@EstElena, @Lec4),
-    (@EstLuis, @Lec5),
-    (@EstPaola, @Lec6),
-    (@EstFelipe, @Lec7),
-    (@EstMaria, @Lec8),
-    (@EstRicardo, @Lec9),
-    (@EstValeria, @Lec10);
+    (@StuJuan, @Lec1),
+    (@StuJuan, @Lec2),
+    (@StuJuan, @Lec3),
+    (@StuJuan, @Lec4),
+    (@StuJuan, @Lec5),
+    (@StuJuan, @Lec6),
+    (@StuMarta, @Lec2),
+    (@StuAndres, @Lec3),
+    (@StuElena, @Lec4),
+    (@StuLuis, @Lec5),
+    (@StuPaola, @Lec6),
+    (@StuFelipe, @Lec7),
+    (@StuMaria, @Lec8),
+    (@StuRicardo, @Lec9),
+    (@StuValeria, @Lec10);
