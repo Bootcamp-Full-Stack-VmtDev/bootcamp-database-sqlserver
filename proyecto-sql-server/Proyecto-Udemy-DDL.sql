@@ -1,160 +1,172 @@
-CREATE DATABASE UdemyClon;
+CREATE DATABASE UdemyClone;
 GO
 
-USE UdemyClon;
+USE UdemyClone;
 GO
+
 -- ========================================
--- TABLA: Categoria
+-- TABLE: Categories
 -- ========================================
-CREATE TABLE Categoria (
-    CategoriaId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    Nombre NVARCHAR(100) NOT NULL,
-    CategoriaPadreId UNIQUEIDENTIFIER NULL, -- FK a sí misma para subcategorías (autoreferencia)
-    CONSTRAINT FK_Categoria_Padre FOREIGN KEY (CategoriaPadreId) REFERENCES Categoria(CategoriaId)
+CREATE TABLE Categories (
+    CategoryId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    Name NVARCHAR(100) NOT NULL,
+    ParentCategoryId UNIQUEIDENTIFIER NULL,
+    CONSTRAINT FK_Categories_Parent 
+        FOREIGN KEY (ParentCategoryId) REFERENCES Categories(CategoryId)
 );
 GO
 
 -- ========================================
--- TABLA: Instructores
+-- TABLE: Instructors
 -- ========================================
-CREATE TABLE Instructores (
+CREATE TABLE Instructors (
     InstructorId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    Nombre NVARCHAR(100) NOT NULL,
+    Name NVARCHAR(100) NOT NULL,
     Email NVARCHAR(100) UNIQUE NOT NULL,
-    FechaRegistro DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
+    CreatedAt DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
 );
 GO
 
 -- ========================================
--- TABLA: Estudiantes
+-- TABLE: Students
 -- ========================================
-CREATE TABLE Estudiantes (
-    EstudianteId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    Nombre NVARCHAR(100) NOT NULL,
+CREATE TABLE Students (
+    StudentId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    Name NVARCHAR(100) NOT NULL,
     Email NVARCHAR(100) UNIQUE NOT NULL,
-    FechaRegistro DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
+    CreatedAt DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
 );
 GO
 
 -- ========================================
--- TABLA: TipoLeccion
+-- TABLE: LessonTypes
 -- ========================================
-CREATE TABLE TipoLeccion (
-    TipoLeccionId INT PRIMARY KEY IDENTITY(1,1),
-    Nombre NVARCHAR(100) NOT NULL
+CREATE TABLE LessonTypes (
+    LessonTypeId INT PRIMARY KEY IDENTITY(1,1),
+    Name NVARCHAR(100) NOT NULL
 );
 GO
 
 -- ========================================
--- TABLA: Cursos
+-- TABLE: Courses
 -- ========================================
-CREATE TABLE Cursos (
-    CursoId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    Titulo NVARCHAR(250) NOT NULL,
-    Descripcion NVARCHAR(250) NOT NULL,
-    Precio DECIMAL(10,2) NOT NULL,
-    Idioma NVARCHAR(50),
-    Nivel NVARCHAR(50),
-    CategoriaId UNIQUEIDENTIFIER NOT NULL,
-    CONSTRAINT FK_Cursos_Categoria FOREIGN KEY (CategoriaId) REFERENCES Categoria(CategoriaId)
+CREATE TABLE Courses (
+    CourseId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    Title NVARCHAR(250) NOT NULL,
+    Description NVARCHAR(250) NOT NULL,
+    Price DECIMAL(10,2) NOT NULL,
+    Language NVARCHAR(50),
+    Level NVARCHAR(50),
+    CategoryId UNIQUEIDENTIFIER NOT NULL,
+    CONSTRAINT FK_Courses_Category 
+        FOREIGN KEY (CategoryId) REFERENCES Categories(CategoryId)
 );
 GO
 
 -- ========================================
--- TABLA N:M: CursoInstructor
+-- TABLE N:M: CourseInstructors
 -- ========================================
-CREATE TABLE CursoInstructor(
-    CursoId UNIQUEIDENTIFIER NOT NULL,
+CREATE TABLE CourseInstructors (
+    CourseId UNIQUEIDENTIFIER NOT NULL,
     InstructorId UNIQUEIDENTIFIER NOT NULL,
-    PRIMARY KEY (CursoId, InstructorId),
-    CONSTRAINT FK_CI_Curso FOREIGN KEY (CursoId) REFERENCES Cursos(CursoId),
-    CONSTRAINT FK_CI_Instructor FOREIGN KEY (InstructorId) REFERENCES Instructores(InstructorId)
+    PRIMARY KEY (CourseId, InstructorId),
+    CONSTRAINT FK_CI_Course 
+        FOREIGN KEY (CourseId) REFERENCES Courses(CourseId),
+    CONSTRAINT FK_CI_Instructor 
+        FOREIGN KEY (InstructorId) REFERENCES Instructors(InstructorId)
 );
 GO
 
 -- ========================================
--- TABLA: Secciones
+-- TABLE: Sections
 -- ========================================
-CREATE TABLE Secciones (
-    SeccionId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    CursoId UNIQUEIDENTIFIER NOT NULL,
-    Titulo NVARCHAR(255) NOT NULL,
-    Orden INT NOT NULL,
-    CONSTRAINT FK_Secciones_Curso FOREIGN KEY (CursoId) REFERENCES Cursos(CursoId)
+CREATE TABLE Sections (
+    SectionId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    CourseId UNIQUEIDENTIFIER NOT NULL,
+    Title NVARCHAR(255) NOT NULL,
+    SortOrder INT NOT NULL,
+    CONSTRAINT FK_Sections_Course 
+        FOREIGN KEY (CourseId) REFERENCES Courses(CourseId)
 );
 GO
 
 -- ========================================
--- TABLA: Lecciones
+-- TABLE: Lessons
 -- ========================================
-CREATE TABLE Lecciones (
-    LeccionId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    SeccionId UNIQUEIDENTIFIER NOT NULL,
-    TipoLeccionId INT NOT NULL,
-    Titulo NVARCHAR(255) NOT NULL,
-    DuracionSegundos DECIMAL(10,2) NOT NULL,
-    Orden INT NOT NULL,
-    CONSTRAINT FK_Lecciones_Seccion FOREIGN KEY (SeccionId) REFERENCES Secciones(SeccionId),
-    CONSTRAINT FK_Lecciones_Tipo FOREIGN KEY (TipoLeccionId) REFERENCES TipoLeccion(TipoLeccionId)
+CREATE TABLE Lessons (
+    LessonId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    SectionId UNIQUEIDENTIFIER NOT NULL,
+    LessonTypeId INT NOT NULL,
+    Title NVARCHAR(255) NOT NULL,
+    DurationSeconds DECIMAL(10,2) NOT NULL,
+    SortOrder INT NOT NULL,
+    CONSTRAINT FK_Lessons_Section 
+        FOREIGN KEY (SectionId) REFERENCES Sections(SectionId),
+    CONSTRAINT FK_Lessons_Type 
+        FOREIGN KEY (LessonTypeId) REFERENCES LessonTypes(LessonTypeId)
 );
 GO
 
 -- ========================================
--- TABLA N:M: Inscripciones
+-- TABLE: Enrollments
 -- ========================================
-CREATE TABLE Inscripciones (
-    InscripcionId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    EstudianteId UNIQUEIDENTIFIER NOT NULL,
-    CursoId UNIQUEIDENTIFIER NOT NULL,
-    FechaInscripcion DATETIME2 DEFAULT SYSUTCDATETIME(),
-    PrecioPagado DECIMAL(10,2) NOT NULL,
-    CuponCodigo NVARCHAR(20) NULL,
-    -- PK compuesta: evitar inscripciones duplicadas
-    CONSTRAINT UC_Estudiante_Curso UNIQUE (EstudianteId, CursoId),
-    CONSTRAINT FK_Inscrip_Estudiante FOREIGN KEY (EstudianteId) REFERENCES Estudiantes(EstudianteId),
-    CONSTRAINT FK_Inscrip_Curso FOREIGN KEY (CursoId) REFERENCES Cursos(CursoId)
+CREATE TABLE Enrollments (
+    EnrollmentId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    StudentId UNIQUEIDENTIFIER NOT NULL,
+    CourseId UNIQUEIDENTIFIER NOT NULL,
+    EnrolledAt DATETIME2 DEFAULT SYSUTCDATETIME(),
+    PricePaid DECIMAL(10,2) NOT NULL,
+    CouponCode NVARCHAR(20) NULL,
+    CONSTRAINT UQ_Student_Course UNIQUE (StudentId, CourseId),
+    CONSTRAINT FK_Enrollments_Student 
+        FOREIGN KEY (StudentId) REFERENCES Students(StudentId),
+    CONSTRAINT FK_Enrollments_Course 
+        FOREIGN KEY (CourseId) REFERENCES Courses(CourseId)
 );
 GO
 
 -- ========================================
--- TABLA: Resenas
+-- TABLE: Reviews
 -- ========================================
-CREATE TABLE Resenas (
-    EstudianteId UNIQUEIDENTIFIER NOT NULL,
-    CursoId UNIQUEIDENTIFIER NOT NULL,
-    Calificacion INT CHECK (Calificacion BETWEEN 1 AND 5),
-    Resena NVARCHAR(250) NOT NULL,
-    Fecha DATETIME2 DEFAULT SYSUTCDATETIME(),
-    -- PK compuesta: dar solo una reseña por estudiante a curso
-    PRIMARY KEY (EstudianteId, CursoId),
-    CONSTRAINT FK_Resena_Estudiante FOREIGN KEY (EstudianteId) REFERENCES Estudiantes(EstudianteId),
-    CONSTRAINT FK_Resena_Curso FOREIGN KEY (CursoId) REFERENCES Cursos(CursoId)
+CREATE TABLE Reviews (
+    StudentId UNIQUEIDENTIFIER NOT NULL,
+    CourseId UNIQUEIDENTIFIER NOT NULL,
+    Rating INT CHECK (Rating BETWEEN 1 AND 5),
+    ReviewText NVARCHAR(250) NOT NULL,
+    CreatedAt DATETIME2 DEFAULT SYSUTCDATETIME(),
+    PRIMARY KEY (StudentId, CourseId),
+    CONSTRAINT FK_Reviews_Student 
+        FOREIGN KEY (StudentId) REFERENCES Students(StudentId),
+    CONSTRAINT FK_Reviews_Course 
+        FOREIGN KEY (CourseId) REFERENCES Courses(CourseId)
 );
 GO
 
 -- ========================================
--- TABLA N:M: ListaDeseos
+-- TABLE: Wishlist
 -- ========================================
-CREATE TABLE ListaDeseos (
-    CursoId UNIQUEIDENTIFIER NOT NULL,
-    EstudianteId UNIQUEIDENTIFIER NOT NULL,
-    -- PK compuesta: evitar duplicados en lista de deseos
-    PRIMARY KEY (CursoId, EstudianteId),
-    CONSTRAINT FK_Wish_Curso FOREIGN KEY (CursoId) REFERENCES Cursos(CursoId),
-    CONSTRAINT FK_Wish_Estudiante FOREIGN KEY (EstudianteId) REFERENCES Estudiantes(EstudianteId)
+CREATE TABLE Wishlist (
+    CourseId UNIQUEIDENTIFIER NOT NULL,
+    StudentId UNIQUEIDENTIFIER NOT NULL,
+    PRIMARY KEY (CourseId, StudentId),
+    CONSTRAINT FK_Wishlist_Course 
+        FOREIGN KEY (CourseId) REFERENCES Courses(CourseId),
+    CONSTRAINT FK_Wishlist_Student 
+        FOREIGN KEY (StudentId) REFERENCES Students(StudentId)
 );
 GO
 
 -- ========================================
--- TABLA N:M: Progreso
+-- TABLE: Progress
 -- ========================================
-CREATE TABLE Progreso (
-    EstudianteId UNIQUEIDENTIFIER NOT NULL,
-    LeccionId UNIQUEIDENTIFIER NOT NULL,
-    FechaTerminada DATETIME2 DEFAULT SYSUTCDATETIME(),
-    -- PK compuesta: evitar progreso duplicado
-    PRIMARY KEY (EstudianteId, LeccionId),
-    CONSTRAINT FK_Prog_Estudiante FOREIGN KEY (EstudianteId) REFERENCES Estudiantes(EstudianteId),
-    CONSTRAINT FK_Prog_Leccion FOREIGN KEY (LeccionId) REFERENCES Lecciones(LeccionId)
+CREATE TABLE Progress (
+    StudentId UNIQUEIDENTIFIER NOT NULL,
+    LessonId UNIQUEIDENTIFIER NOT NULL,
+    CompletedAt DATETIME2 DEFAULT SYSUTCDATETIME(),
+    PRIMARY KEY (StudentId, LessonId),
+    CONSTRAINT FK_Progress_Student 
+        FOREIGN KEY (StudentId) REFERENCES Students(StudentId),
+    CONSTRAINT FK_Progress_Lesson 
+        FOREIGN KEY (LessonId) REFERENCES Lessons(LessonId)
 );
 GO
